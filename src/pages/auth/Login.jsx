@@ -80,7 +80,7 @@ const LoginPage = () => {
     const handleShowClick = () => setShowPassword(!showPassword);
 
     const content = (isLoading) ? (
-        <Center h={'100vh'} w={'full'} bg={'primary.900'}>
+        <Center h={'100vh'} w={'full'} bg={bgAuth} _dark={'primary.900'}>
             <Stack spacing={4} px={4} direction="column" align={'center'}>
                 <Text fontSize="xl" fontWeight="bold">
                     {' '}

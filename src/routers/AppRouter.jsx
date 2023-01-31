@@ -36,6 +36,7 @@ export default function AppRouter() {
     return (
         <Routes>
             <Route element={<PrivateRoutes />} >
+                <Route path="/" element={<HomeContent />} />
                 <Route path="/inicio" element={<HomeContent />} />
                 <Route path='/settings' element={<SettingsPage />} />
                 <Route path='/profile' element={<MiPerfilPage />} />
@@ -113,11 +114,10 @@ export default function AppRouter() {
 
             </Route>
             <Route element={<PublicRoute />}>
-                <Route path="login" element={<LoginPage />} />
-                <Route path="register" element={<RegisterPage />} />
-                <Route path="forgot-password" element={<ForgotPasswordPage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
+                <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             </Route>
-            <Route path="/" element={<HomeContent />} />
             <Route path="*" element={<NotFoundPage />} />
         </Routes>
     );
