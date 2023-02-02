@@ -22,12 +22,12 @@ import {
     Stack,
     Textarea,
     Tooltip,
-    useColorModeValue
+    useColorModeValue,
 } from '@chakra-ui/react'
 import { VscAdd } from 'react-icons/vsc'
 import { useDispatch } from 'react-redux';
 import { Search2Icon } from '@chakra-ui/icons';
-import { getEstudianteByDni } from '../../../features/estudiantes/CEBA/estudianteSlice';
+import { getEstudianteSearch } from '../../../features/estudiantes/CEBA/estudianteSlice';
 import { ToastChakra } from '../../../helpers/toast';
 import { RiRefreshLine } from 'react-icons/ri';
 import { createPago } from '../../../features/pagos/CEBA/pagoSlice';
@@ -38,13 +38,15 @@ const ModalRegistrarPago = () => {
     const dispatch = useDispatch();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [openModalSearch, setOpenModalSearch] = useState(false);
 
     const initialValues = {
         codigo: '',
         estudiante: '',
+        concepto: '',
         meses: [],
         anio: new Date().getFullYear().toString(),
-        monto: '',
+        importe: '',
         metodo_pago: '',
         descripcion: '',
         estado: '',
@@ -53,9 +55,10 @@ const ModalRegistrarPago = () => {
 
     const [indice, setIndice] = useState(initialValues);
 
-    const [dniEstudiante, setDniEstudiante] = useState('');
-    const [datosEstudiante, setDatosEstudiante] = useState([{}]);
-    const bg = useColorModeValue('white', 'gray.900');
+    const [dataSearch, setDataSearch] = useState('');
+    const [datosEstudiante, setDatosEstudiante] = useState([]);
+    const [estudianteSeleccionado, setEstudianteSeleccionado] = useState([]);
+    const bg = useColorModeValue('white', 'primary.900');
 
     const handleModalOpen = () => {
         setIsModalOpen(!isModalOpen)
@@ -64,18 +67,23 @@ const ModalRegistrarPago = () => {
     const handleModalClose = () => {
         setIsModalOpen(false);
         setIndice(initialValues);
-        setDniEstudiante('');
-        setDatosEstudiante([{}]);
+        setDatosEstudiante([]);
+        setEstudianteSeleccionado([]);
     }
 
+    const handleCloseModalSearch = () => {
+        setOpenModalSearch(false);
+        setDataSearch('');
+    }
 
     const handleSearchEstudianteByDni = () => {
-        dispatch(getEstudianteByDni(dniEstudiante)).then((res) => {
-            if(res.meta?.requestStatus !== 'rejected'){
-                setIndice({ ...indice, estudiante: res.payload._id });
+        dispatch(getEstudianteSearch(dataSearch)).then((res) => {
+            if(res.payload.length > 0){
+                setOpenModalSearch(true);
                 setDatosEstudiante(res.payload);
             } else {
-                ToastChakra('ESTUDIANTE NO ENCONTRADO', 'El estudiante no se encuentra registrado con ese DNI', 'error', 1500, 'bottom');
+                ToastChakra('NO SE ENCONTRARON REGISTROS', 'No se encontró registros con los datos ingresados', 'error', 1500, 'bottom');
+                setDatosEstudiante([]);
             }
         });
     }
@@ -85,8 +93,7 @@ const ModalRegistrarPago = () => {
         dispatch(createPago(indice));
         setIsModalOpen(false);
         setIndice(initialValues);
-        setDniEstudiante('');
-        setDatosEstudiante([{}]);
+        setDatosEstudiante([]);
     }
 
     const handleClickGenerateCode = () => {
@@ -123,6 +130,20 @@ const ModalRegistrarPago = () => {
         setIndice({ ...indice, meses: data.map((item) => item.value) });
     }
 
+    const handleSelectConcepto = (data) => {
+        setIndice({ ...indice, concepto: data.value });
+    }
+
+    const handleSelectEstudiante = (data) => {
+        if(data){
+            setIndice({ ...indice, estudiante: data.value });
+            setEstudianteSeleccionado(data);
+        }else{
+            setIndice({ ...indice, estudiante: '' });
+            setEstudianteSeleccionado([]);
+        }
+    }
+
     const ChakraStyle = {
         option: (provided) => ({
             ...provided,
@@ -130,7 +151,7 @@ const ModalRegistrarPago = () => {
             cursor: "pointer",
             borderRadius: "xs",
             fontWeight: 'semibold',
-            _hover:{ 
+            _hover: {
                 bg: 'blue.500',
                 color: 'white',
                 fontWeight: 'semibold',
@@ -165,11 +186,24 @@ const ModalRegistrarPago = () => {
         { value: anio + 5, label: anio + 5 },
     ]
 
+    const conceptos = [
+        { value: 'MATRICULA', label: 'MATRICULA' },
+        { value: 'MENSUALIDAD', label: 'MENSUALIDAD' },
+        { value: 'OTROS', label: 'OTROS' },
+    ]
+
+    const estudianteOptions = datosEstudiante.map((item) => {
+        return {
+            value: item._id,
+            label: `🧑‍🎓${item.apellidos}, ${item.nombres} 🎴 ${item.dni} `            
+        }
+    });
+
     return (
         <>
             <Button
                 colorScheme="messenger"
-                _dark={{ bg: "messenger.500", color: "white", _hover: { bg: "messenger.600" }}}
+                _dark={{ bg: "messenger.500", color: "white", _hover: { bg: "messenger.600" } }}
                 aria-label="Agregar"
                 leftIcon={<Icon as={VscAdd} fontSize="2xl" />}
                 variant="solid"
@@ -205,36 +239,87 @@ const ModalRegistrarPago = () => {
                                         </InputRightElement>
                                     </InputGroup>
                                 </FormControl>
+                                <FormControl>
+                                    <FormLabel fontWeight="semibold">CONCEPTO DE PAGO</FormLabel>
+                                    <Select
+                                        placeholder="Seleccione el concepto de pago"
+                                        size="md"
+                                        onChange={handleSelectConcepto}
+                                        options={conceptos}
+                                        isClearable
+                                        isSearchable
+                                        colorScheme="purple"
+                                        className="chakra-react-select"
+                                        classNamePrefix="chakra-react-select"
+                                        variant="fulled"
+                                    />
+                                </FormControl>
+                            </Stack>
+                            <Stack spacing={2} direction={{base: "column", lg: "row"}} justifyContent={'space-between'} mt={2}>
                                 <FormControl isRequired>
                                     <FormLabel fontWeight="semibold">ESTUDIANTE</FormLabel>
                                     <InputGroup size='md'>
                                         <Input
                                             type={'text'}
-                                            placeholder='Buscar por dni'
-                                            onChange={(e) => setDniEstudiante(e.target.value)}
+                                            placeholder='Buscar por dni, nombres y apellidos del estudiante'
+                                            defaultValue={dataSearch}
+                                            onChange={(e) => setDataSearch(e.target.value)}
                                         />
                                         <InputRightElement width='2.5rem'>
                                             <Tooltip hasArrow label='Buscar por DNI' placement='auto'>
                                                 <IconButton
                                                     aria-label="Buscar"
-                                                    rounded={'full'} size={'sm'}
                                                     icon={<Icon as={Search2Icon} fontSize="md" />}
                                                     colorScheme={'green'}
                                                     variant="solid"
-                                                    disabled={dniEstudiante === '' ? true : false}
+                                                    isDisabled={dataSearch.length <=3 ? true : false}
                                                     onClick={handleSearchEstudianteByDni}
                                                 />
                                             </Tooltip>
+                                            <Modal isOpen={openModalSearch} onClose={handleCloseModalSearch} size={'4xl'}>
+                                                <ModalOverlay />
+                                                <ModalContent>
+                                                    <ModalHeader>SELECCIONE EL ESTUDIANTE</ModalHeader>
+                                                    <ModalCloseButton />
+                                                    <ModalBody>
+                                                        <Select
+                                                            placeholder="Seleccione el estudiante"
+                                                            size="md"
+                                                            onChange={handleSelectEstudiante}
+                                                            options={estudianteOptions}
+                                                            isClearable
+                                                            isSearchable
+                                                            colorScheme="pink"
+                                                            className="chakra-react-select"
+                                                            classNamePrefix="chakra-react-select"
+                                                            variant="fulled"
+                                                        />
+                                                    </ModalBody>
+                                                    <ModalFooter>
+                                                        <Button colorScheme='blue' mr={3} onClick={handleCloseModalSearch}>
+                                                            ACEPTAR
+                                                        </Button>
+                                                    </ModalFooter>
+                                                </ModalContent>
+                                            </Modal>
                                         </InputRightElement>
                                     </InputGroup>
                                     {
-                                        !datosEstudiante?.nombres ? null : <FormHelperText>
-                                            El estudiante Seleccionado es : <span style={{ color: 'blue', fontWeight: "bold" }}>{datosEstudiante?.nombres + ' ' + datosEstudiante?.apellidos}</span>
+                                        !estudianteSeleccionado?.value ? null : <FormHelperText>
+                                            El estudiante Seleccionado es : <span style={{ color: 'blue', fontWeight: "bold" }}>{estudianteSeleccionado?.label}</span>
                                         </FormHelperText>
                                     }
                                 </FormControl>
+                                <FormControl isRequired>
+                                    <FormLabel fontWeight="semibold">IMPORTE</FormLabel>
+                                    <Input
+                                        type={'number'}
+                                        placeholder='Ingrese el importe'
+                                        onChange={(e) => setIndice({ ...indice, importe: e.target.value })}
+                                    />
+                                </FormControl>
                             </Stack>
-                            <Stack spacing={4} direction="row" justifyContent="space-between" mt={2}>
+                            <Stack spacing={4} direction={{base: "column", lg: "row"}} justifyContent="space-between" mt={2}>
                                 <FormControl isRequired>
                                     <FormLabel fontWeight="semibold">AÑO</FormLabel>
                                     <SelectChakra
@@ -250,7 +335,7 @@ const ModalRegistrarPago = () => {
                                 </FormControl>
                                 <FormControl isRequired>
                                     <FormLabel fontWeight="semibold">MES</FormLabel>
-                                    <Select 
+                                    <Select
                                         placeholder="Seleccione el mes"
                                         options={meses}
                                         onChange={handleSelect}
@@ -263,14 +348,6 @@ const ModalRegistrarPago = () => {
                                         isMulti
                                     />
                                 </FormControl>
-                                <FormControl isRequired>
-                                    <FormLabel fontWeight="semibold">MONTO</FormLabel>
-                                        <Input
-                                            type={'number'}
-                                            placeholder='Ingrese el monto'
-                                            onChange={(e) => setIndice({ ...indice, monto: e.target.value })}
-                                        />
-                                </FormControl>
                             </Stack>
                             <Stack spacing={2} direction="column" justifyContent="space-between" mt={2}>
 
@@ -279,9 +356,10 @@ const ModalRegistrarPago = () => {
                                     <Textarea
                                         placeholder="Descripcion de la entrega"
                                         onChange={(e) => setIndice({ ...indice, descripcion: e.target.value })}
+                                        rows={2}
                                     />
                                 </FormControl>
-                                <Stack spacing={4} direction="row" justifyContent="space-between" mt={4}>
+                                <Stack spacing={4} direction={{base: "column", lg: "row"}} justifyContent="space-between" mt={4}>
                                     <FormControl isRequired>
                                         <FormLabel fontWeight={'semibold'}>ESTADO</FormLabel>
                                         <RadioGroup
@@ -313,6 +391,7 @@ const ModalRegistrarPago = () => {
                                     <Textarea
                                         placeholder="Observaciones adicionales de la entrega"
                                         onChange={(e) => setIndice({ ...indice, observaciones: e.target.value })}
+                                        rows={2}
                                     />
                                 </FormControl>
                             </Stack>
@@ -334,7 +413,7 @@ const ModalRegistrarPago = () => {
                                 size="lg"
                                 mr={3}
                                 type='submit'
-                                disabled={ !indice.estudiante || !indice?.codigo || !indice?.meses || !indice?.anio || !indice?.monto || !indice?.estado }
+                                isDisabled={!indice.estudiante || !indice?.codigo || !indice?.meses || !indice?.anio || !indice?.importe || !indice?.estado}
                                 borderRadius="none"
                             >
                                 REGISTRAR PAGO
@@ -348,3 +427,28 @@ const ModalRegistrarPago = () => {
 }
 
 export default ModalRegistrarPago;
+
+
+// function ModalSeleccionarEstudiante({ open, close, estudiantes }) {
+
+//     return (
+//         <>
+//             <Modal isOpen={open} onClose={close}>
+//                 <ModalOverlay />
+//                 <ModalContent>
+//                     <ModalHeader>Modal Title</ModalHeader>
+//                     <ModalCloseButton />
+//                     <ModalBody>
+//                         <Text>Hi There</Text>
+//                     </ModalBody>
+//                     <ModalFooter>
+//                         <Button colorScheme='blue' mr={3} onClick={close}>
+//                             Close
+//                         </Button>
+//                         <Button variant='ghost'>Secondary Action</Button>
+//                     </ModalFooter>
+//                 </ModalContent>
+//             </Modal>
+//         </>
+//     )
+// }

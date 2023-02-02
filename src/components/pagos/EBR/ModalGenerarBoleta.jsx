@@ -127,12 +127,12 @@ const ModalGenerarBoleta = ({ pago }) => {
                 size="xl"
             >
                 <DrawerOverlay />
-                <DrawerContent _dark={{ bg: "primary.800" }}>
+                <DrawerContent _dark={{ bg: "primary.800" }} fontFamily={'monospace'}>
                     <DrawerCloseButton color="white" size={'lg'} />
                     <DrawerHeader fontWeight="bold" bg="purple.600" color="gray.200" textAlign="center">BOLETA DE PAGO</DrawerHeader>
                     <DrawerBody ref={componentRef} id="boleta" w="full" h="100%" bg={'white'} _dark={{ bg: "primary.800" }}>
-                        <Stack direction="column" mt={4} w={'full'}>
-                            <Stack direction={{ base: "column", lg: "row" }} w="full" mb={4} justifyContent="space-evenly" alignItems={'center'} spacing={4} display={'flex'}>
+                        <Stack direction="column" mt={2} w={'full'}>
+                            <Stack direction={{ base: "column", lg: "row" }} w="full" mb={2} justifyContent="space-evenly" alignItems={'center'} spacing={4} display={'flex'}>
                                 <ImageChakra objectFit='cover' src={'https://upload.wikimedia.org/wikipedia/commons/0/00/Colegio_mayor_coar_logo.png'} maxW={'100px'} fallbackSrc='https://via.placeholder.com/100x100?text=LOGO' alt={pago?.nombre} alignSelf={'center'} />
                                 <HStack spacing={2} w="full" justifyContent="space-between" display={'flex'}>
                                     <Stack direction="column" spacing={2} w="full" fontSize={{ base: '9px', lg: '12px' }} textAlign={'start'}>
@@ -154,8 +154,8 @@ const ModalGenerarBoleta = ({ pago }) => {
                                 borderWidth={'3px'}
                             />
                             <Stack direction={{ base: "column", lg: "row" }} w="full" justifyContent="stretch" spacing={6}>
-                                <Stack direction="column" mt={4} spacing={2} w="full">
-                                    <Stack direction={{ base: "column", lg: "row" }} spacing={2} justifyContent="space-between" mb={6}>
+                                <Stack direction="column" mt={2} spacing={2} w="full">
+                                    <Stack direction={{ base: "column", lg: "row" }} spacing={2} justifyContent="space-between" mb={2}>
                                         <Text fontWeight="bold" fontSize={'3xl'} alignSelf={'center'}>BOLETA</Text>
                                         <Stack direction="column" fontSize={'sm'}>
                                             <HStack spacing={2} justifyContent="space-between">
@@ -179,27 +179,27 @@ const ModalGenerarBoleta = ({ pago }) => {
                                     <Divider borderColor="purple.600" />
                                     <Stack>
                                         <Text fontWeight="bold" fontSize={'2xl'} alignSelf={'center'}>DETALLES DEL PAGO</Text>
-                                        <Table border={'1px'} mt={6}>
+                                        <Table border={'1px'} mt={2}>
                                             <TableCaption>El monto de la boleta no incluye el impuesto sobre las ventas.</TableCaption>
                                             <Thead border={'1px'}>
                                                 <Tr>
                                                     <Th color={useColorModeValue('black', 'white')} fontSize={{ base: 'xs', lg: 'md' }} fontWeight={'bold'}>AÑO</Th>
                                                     <Th color={useColorModeValue('black', 'white')} fontSize={{ base: 'xs', lg: 'md' }} fontWeight={'bold'}>MES</Th>
-                                                    <Th color={useColorModeValue('black', 'white')} fontSize={{ base: 'xs', lg: 'md' }} fontWeight={'bold'} isNumeric>MONTO PAGADO</Th>
+                                                    <Th color={useColorModeValue('black', 'white')} fontSize={{ base: 'xs', lg: 'md' }} fontWeight={'bold'} isNumeric>IMPORTE PAGADO</Th>
                                                 </Tr>
                                             </Thead>
                                             <Tbody border={'1px'}>
                                                 <Tr textAlign={'right'} border={'1px'}>
                                                     <Td fontSize={{ base: 'xs', lg: 'sm' }}>{pago?.anio}</Td>
                                                     <Td fontSize={{ base: 'xs', lg: 'sm' }}>{pago?.meses?.map(mes => mes).join(', ')}</Td>
-                                                    <Td fontSize={{ base: 'xs', lg: 'sm' }} isNumeric>S/{pago?.monto}</Td>
+                                                    <Td fontSize={{ base: 'xs', lg: 'sm' }} isNumeric>S/{pago?.importe}</Td>
                                                 </Tr>
                                             </Tbody>
                                             <Tfoot mt={4}>
                                                 <Tr mt={4}>
                                                     <Th></Th>
-                                                    <Th color={useColorModeValue('black', 'white')} fontSize={{ base: 'xs', lg: 'lg' }}>TOTAL PAGADO</Th>
-                                                    <Th color={useColorModeValue('black', 'white')} isNumeric fontSize={{ base: 'md', lg: 'xl' }}>S/ {pago?.monto} </Th>
+                                                    <Th color={useColorModeValue('black', 'white')} fontSize={{ base: 'xs', lg: 'lg' }}> IMPORTE TOTAL PAGADO</Th>
+                                                    <Th color={useColorModeValue('black', 'white')} isNumeric fontSize={{ base: 'md', lg: 'xl' }}>S/ {pago?.importe} </Th>
                                                 </Tr>
                                             </Tfoot>
                                         </Table>

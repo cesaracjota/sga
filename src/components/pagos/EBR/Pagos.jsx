@@ -109,10 +109,10 @@ const Pagos = () => {
             resizable: true
         },
         {
-            name: 'MONTO PAGADO',
-            selector: row => row.monto,
+            name: 'IMPORTE',
+            selector: row => row.importe,
             sortable: true,
-            cellExport: row => row.monto,
+            cellExport: row => row.importe,
             center: true,
             cell: row => (
                 <div>
@@ -125,7 +125,7 @@ const Pagos = () => {
                         rounded="full"
                         color="white"
                     >
-                        S/ {row.monto}
+                        S/ {row.importe}
                     </Badge>
                 </div>
             )

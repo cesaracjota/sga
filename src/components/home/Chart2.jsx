@@ -13,18 +13,18 @@ export default class Example extends PureComponent {
             data = [
                 {
                     name: 'MODALIDAD EBR',
-                    total_pagos_año_actual: reportesEBR.pagos[0].monto_total_pagos_por_anio,
-                    total_pagos: reportesEBR.pagos[0].monto_total_pagos,
+                    total_pagos_año_actual: reportesEBR.pagos[0]?.monto_total_pagos_por_anio,
+                    total_pagos: reportesEBR.pagos[0]?.monto_total_pagos,
                 },
                 {
                     name: 'MODALIDAD CEBA',
-                    total_pagos_año_actual: reportesCEBA.pagos[0].monto_total_pagos_por_anio,
-                    total_pagos: reportesCEBA.pagos[0].monto_total_pagos,
+                    total_pagos_año_actual: reportesCEBA.pagos[0]?.monto_total_pagos_por_anio,
+                    total_pagos: reportesCEBA.pagos[0]?.monto_total_pagos,
                 },
                 {
                     name: 'MODALIDAD RESIDENCIA',
-                    total_pagos_año_actual: reportesRESIDENCIA.pagos[0].monto_total_pagos_por_anio,
-                    total_pagos: reportesRESIDENCIA.pagos[0].monto_total_pagos,
+                    total_pagos_año_actual: reportesRESIDENCIA.pagos[0]?.monto_total_pagos_por_anio,
+                    total_pagos: reportesRESIDENCIA.pagos[0]?.monto_total_pagos,
                 },
             ];
         }

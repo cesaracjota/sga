@@ -272,12 +272,12 @@ const Estudiantes = () => {
                         {...tableData} 
                         print={false}
                         exportHeaders={true}
-                        filterPlaceholder="BUSCAR"
+                        filterPlaceholder="BUSCAR ESTUDIANTE"
                         numberOfColumns={7}
                         fileName={'ESTUDIANTES_EBR'}
                     >
                         <DataTable
-                            defaultSortField = "createdAt"
+                            defaultSortField = "nombre"
                             defaultSortAsc={false}
                             defaultSortOrder="desc"
                             pagination={true}

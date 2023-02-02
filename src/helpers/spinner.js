@@ -5,7 +5,7 @@ import { Spinner } from "react-loading-io";
 export function SpinnerComponent () {
 
     return (
-        <Flex alignItems="center" ml={-20} h={'70vh'} w={'full'} justifyContent="center">
+        <Flex alignItems="center" ml={{base : -10, lg: -20}} h={'70vh'} w={'full'} justifyContent="center">
             <Center>
                 <Stack spacing={4} px={4} direction="column" align={'center'}>
                     <Spinner

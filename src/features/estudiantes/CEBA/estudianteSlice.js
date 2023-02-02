@@ -79,6 +79,23 @@ export const getEstudianteByDni = createAsyncThunk(
     }
 )
 
+export const getEstudianteSearch = createAsyncThunk(
+    "estudiante_ceba/search/get",
+    async (search, thunkAPI) => {
+        try {
+            return await estudianteService.getEstudianteSearch(search);
+        } catch (error) {
+            const message =
+            (error.response &&
+                error.response.data &&
+                error.response.data.msg) ||
+                error.message ||
+                error.toString();
+            return thunkAPI.rejectWithValue(message);
+        }
+    }
+);
+
 export const updateEstudiante = createAsyncThunk(
     "estudiantes/update",
     async (data, thunkAPI ) => {

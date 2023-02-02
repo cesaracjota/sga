@@ -102,7 +102,7 @@ const DetallesPago = ({ location }) => {
                             <Text>{pago?.metodo_pago}</Text>
                         </Stack>
                         <Stack spacing={1} direction="column" justifyContent="space-between">
-                            <Text fontWeight="bold">MONTO PAGADO</Text>
+                            <Text fontWeight="bold">IMPORTE PAGADO</Text>
                             <Badge
                                 colorScheme={'purple'}
                                 variant="solid"
@@ -110,7 +110,7 @@ const DetallesPago = ({ location }) => {
                                 py={1.5}
                                 rounded="full"
                             >
-                                S/{pago?.monto}
+                                S/{pago?.importe}
                             </Badge>
                         </Stack>
                     </Stack>

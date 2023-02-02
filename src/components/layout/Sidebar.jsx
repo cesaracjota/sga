@@ -13,7 +13,7 @@ import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { AddIcon } from '@chakra-ui/icons';
 import { RiBook3Fill, RiComputerFill, RiHome5Fill, RiMapPin4Fill, RiUserStarFill } from 'react-icons/ri';
-import { FaChalkboardTeacher, FaClipboardCheck, FaQuoteRight, FaUsers, FaVest } from 'react-icons/fa';
+import { FaChalkboardTeacher, FaChartPie, FaClipboardCheck, FaQuoteRight, FaUsers, FaVest } from 'react-icons/fa';
 import { MdGrade, MdMonetizationOn, MdScience, MdSettings, MdTableChart } from 'react-icons/md';
 import { FcPieChart } from 'react-icons/fc';
 
@@ -127,6 +127,10 @@ const SidebarContent = (props) => {
         {
             icon: FcPieChart,
             name: "FcPieChart",
+        },
+        {
+            icon: FaChartPie,
+            name: "FaChartPie",
         },
     ]
 

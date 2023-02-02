@@ -132,13 +132,13 @@ const ReporteEstudiantes = ({ reportesCEBA }) => {
                 'CANTIDAD ESTUDIANTES: <b>{point.y}</b><br/>'
         },
         title: {
-            text: 'CANTIDAD DE ESTUDIANTES POR TURNO DE ESTUDIO'
+            text: 'CANTIDAD DE ESTUDIANTES POR MODALIDAD DE ESTUDIO'
         },
         subtitle: {
             text: 'Source: <a href="/ebr/estudiantes">Más Detalles</a>'
         },
         xAxis: {
-            categories: 'Estudiantes Por Turno',
+            categories: 'ESTUDIANTES POR MODALIDAD',
         },
         plotOptions: {
             pie: {
@@ -156,18 +156,18 @@ const ReporteEstudiantes = ({ reportesCEBA }) => {
             showInLegend: true,
             data: [
                 {
-                    name: 'TURNO MAÑANA',
-                    y: data_estudiantesCEBA?.turno_manana,
+                    name: 'PRESENCIAL',
+                    y: data_estudiantesCEBA?.modalidad_presencial,
                     color: '#38a169'
                 },
                 {
-                    name: 'TURNO TARDE',
-                    y: data_estudiantesCEBA?.turno_tarde,
+                    name: 'VIRTUAL',
+                    y: data_estudiantesCEBA?.modalidad_virtual,
                     color: '#e53e3e'
                 },
                 {
-                    name: 'TURNO NOCHE',
-                    y: data_estudiantesCEBA?.turno_noche,
+                    name: 'PERIFÉRICO',
+                    y: data_estudiantesCEBA?.modalidad_periferico,
                     color: '#3182CE'
                 }
             ]

@@ -18,6 +18,11 @@ const getEstudianteByDni = async (dni) => {
     return response.data;
 }
 
+const getEstudianteSearch = async (search) => {
+    const response = await axios.get(`${API_URL}/estudiantes_ebr/search/${search}`);
+    return response.data;
+}
+
 const createEstudiante = async (data, token) => {
     const config = {
         headers: {
@@ -67,6 +72,7 @@ const estudianteService = {
     updateEstudiante,
     deleteEstudiante,
     getEstudianteByDni,
+    getEstudianteSearch
 }
 
 export default estudianteService;
