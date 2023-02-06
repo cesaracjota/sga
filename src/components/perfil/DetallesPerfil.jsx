@@ -17,11 +17,6 @@ const DetallesPerfil = ({ usuario }) => {
 
     useEffect(() => {
 
-        if(isError) {
-            ToastChakra('Error', message, 'error', 1000);
-            console.log(message);
-        }
-
         if (!user) {
             navigate("/login");
         }
@@ -32,7 +27,12 @@ const DetallesPerfil = ({ usuario }) => {
             dispatch(reset())
         }
 
-    }, [user, navigate, isError, message, dispatch, usuario.uid]);
+    }, [user, navigate, dispatch, usuario.uid]);
+
+    if(isError) {
+        ToastChakra('Error', message, 'error', 1500);
+        console.log(message);
+    }
 
     if (isLoading) {
         return <SpinnerComponent />

@@ -51,13 +51,15 @@ const LoginPage = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
+
         if (isError) {
             ToastChakra('Error', message, 'error', 1500, 'top-right');
         }
 
         dispatch(reset());
 
-    }, [dispatch, isError, isSuccess, message, navigate, ROLE]);
+    }, [dispatch, isSuccess, isError, message, navigate, ROLE]);
+
 
     const correoUsuario = window.localStorage.getItem('usuario_correo');
 

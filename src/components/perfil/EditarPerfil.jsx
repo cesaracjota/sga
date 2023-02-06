@@ -30,11 +30,6 @@ const EditarPerfil = ({ usuario }) => {
 
     useEffect(() => {
 
-        if(isError) {
-            ToastChakra('Error', message, 'error', 1000);
-            console.log(message);
-        }
-
         if (!user) {
             navigate("/login");
         }
@@ -47,7 +42,12 @@ const EditarPerfil = ({ usuario }) => {
             dispatch(reset())
         }
 
-    }, [user, navigate, isError, message, dispatch, usuario.uid]);
+    }, [user, navigate, dispatch, usuario.uid]);
+    
+    if(isError) {
+        ToastChakra('Error', message, 'error', 1500);
+        console.log(message);
+    }
 
     const handleUpdate = () => {
         dispatch(updatePersona(indice)).then(() => {

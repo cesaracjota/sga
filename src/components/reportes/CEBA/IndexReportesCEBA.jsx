@@ -6,6 +6,7 @@ import { getReportesCEBA, reset } from '../../../features/reporteSlice';
 import { SpinnerComponent } from '../../../helpers/spinner';
 import ReporteEstudiantes from './ResporteEstudiantes';
 import ReportePagos from './ReportePagos';
+import { ToastChakra } from '../../../helpers/toast';
 
 const IndexReportesCEBA = () => {
 
@@ -14,7 +15,7 @@ const IndexReportesCEBA = () => {
 
     const { user } = useSelector((state) => state.auth);
 
-    const { reportesCEBA, isLoading, message } = useSelector((state) => state.reportes);
+    const { reportesCEBA, isLoading, message, isError } = useSelector((state) => state.reportes);
 
     useEffect(() => {
 
@@ -32,7 +33,12 @@ const IndexReportesCEBA = () => {
             dispatch(reset());
         }
 
-    }, [dispatch, message, navigate, user]);
+    }, [dispatch, navigate, user]);
+
+    if(isError) {
+        ToastChakra('Error', message, 'error', 1500);
+        console.log(message);
+    }
 
     if (isLoading) {
         return <SpinnerComponent />

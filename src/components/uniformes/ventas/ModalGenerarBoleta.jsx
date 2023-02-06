@@ -11,7 +11,7 @@ import {
     Stack,
     Text,
     Divider,
-    Image,
+    Image as ImageChakra,
     Tooltip,
     HStack,
     Table,
@@ -22,12 +22,17 @@ import {
     Tbody,
     Td,
     Tfoot,
+    useColorModeValue,
+    DrawerCloseButton,
 } from '@chakra-ui/react';
 import Moment from 'moment';
 import { FaFileInvoice } from 'react-icons/fa';
 import { useReactToPrint } from 'react-to-print';
+import downloadjs from 'downloadjs';
+import html2canvas from 'html2canvas';
+import logoIE from '../../../assets/img/MI.png';
 
-const ModalGenerarBoleta = ({ venta_uniforme }) => {
+const ModalGenerarBoleta = ({ ventas_uniforme }) => {
 
     const [isOpenDrawer, setIsOpenDrawer] = useState(false);
 
@@ -42,39 +47,60 @@ const ModalGenerarBoleta = ({ venta_uniforme }) => {
         setIsOpenDrawer(false);
     }
 
+    // dowload img with html2canvas
+
+    const handleDownloadImageBase = () => {
+        const input = document.getElementById('boleta');
+
+        html2canvas(input, {
+            allowTaint: true,
+            useCORS: true,
+            logging: false,
+            height: window.outerHeight + window.innerHeight,
+            windowHeight: window.outerHeight + window.innerHeight,
+            width: window.outerWidth + window.innerWidth,
+            windowWidth: window.outerWidth + window.innerWidth,
+            backgroundColor: '#fff', scale: 1.0
+        })
+            .then((canvas) => {
+
+                const imgData = canvas.toDataURL('image/png', 1.0);
+
+                downloadjs(imgData, `Boleta de venta de uniforme - ${ventas_uniforme.codigo}`);
+
+            });
+
+    }
+
+    const handleDownloadImageLg = () => {
+        const input = document.getElementById('boleta');
+        html2canvas(input, {
+            allowTaint: true,
+            useCORS: true,
+            logging: false,
+            backgroundColor: '#fff',
+            scale: 1.0
+        })
+            .then((canvas) => {
+
+                const imgData = canvas.toDataURL('image/png', 1.0);
+
+                downloadjs(imgData, `Boleta de venta de uniforme - ${ventas_uniforme.codigo}`);
+
+            });
+
+    }
+
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
-        documentTitle: `Boleta de venta de uniforme - ${venta_uniforme.codigo}`,
+        copyStyles: true,
+        documentTitle: `Boleta de venta de uniforme - ${ventas_uniforme.codigo}`,
         documentContent: () => componentRef.current,
         documentContentURL: () => componentRef.current,
         documentHead: () => componentRef.current,
         documentBodyClassName: 'pdf-body',
-        onBeforeGetContent: () => {
-            const style = document.createElement('style');
-            style.innerHTML = `
-                .pdf-body {
-                    font-family: 'Roboto', sans-serif;
-                    font-size: 12px;
-                    color: #000;
-                }
-            `;
-            document.head.appendChild(style);
-        },
-        onAfterPrint: () => {
-            const style = document.querySelector('style');
-            style.remove();
-        },
-
         onBeforePrint: () => {
-            const style = document.createElement('style');
-            style.innerHTML = `
-                .pdf-body {
-                    font-family: 'Roboto', sans-serif;
-                    font-size: 12px;
-                    color: #000;
-                }
-            `;
-            document.head.appendChild(style);
+            console.log('onBeforePrint');
         },
     });
 
@@ -102,24 +128,23 @@ const ModalGenerarBoleta = ({ venta_uniforme }) => {
                 size="xl"
             >
                 <DrawerOverlay />
-                <DrawerContent _dark={{ bg: "primary.800" }}>
-                    <DrawerHeader fontWeight="bold" bg="purple.600" color="gray.200" textAlign="center">BOLETA DE VENTA</DrawerHeader>
-                    <DrawerBody ref={componentRef} fontFamily={'heading'}>
-                        <Stack direction="column" mt={4} w={'full'}>
-                            <Stack direction="row" w="full" mb={4} justifyContent="space-evenly" alignItems={'center'} spacing={6} display={'flex'}>
-                                <Image objectFit='cover' src={'https://upload.wikimedia.org/wikipedia/commons/0/00/Colegio_mayor_coar_logo.png'} maxW={'100px'} fallbackSrc='https://via.placeholder.com/100x100?text=LOGO' alt={venta_uniforme.nombre} alignSelf={'center'} />
-                                <HStack spacing={4} w="full" justifyContent="space-around" textAlign={'end'}>
-                                    <Stack direction="column" spacing={2} w="full" fontSize={'12px'}>
-                                        <Text>SGA - Colegio de Alto Rendimiento</Text>
-                                        <Text>RUC: 1020304050</Text>
-                                        <Text>Av. Los Pinos 123</Text>
+                <DrawerContent _dark={{ bg: "primary.800" }} fontFamily={'monospace'}>
+                    <DrawerCloseButton color="white" size={'lg'} />
+                    <DrawerHeader fontWeight="bold" bg="purple.600" color="gray.200" textAlign="center">BOLETA DE VENTA DE UNIFORME</DrawerHeader>
+                    <DrawerBody ref={componentRef} id="boleta" w="full" h="100%" bg={'white'} _dark={{ bg: "primary.800" }}>
+                        <Stack direction="column" mt={2} w={'full'}>
+                            <Stack direction={{ base: "column", lg: "row" }} w="full" mb={2} justifyContent="space-evenly" alignItems={'center'} spacing={6} display={'flex'}>
+                                <ImageChakra objectFit='cover' src={logoIE} maxW={'100px'} fallbackSrc='https://via.placeholder.com/100x100?text=LOGO' alt={ventas_uniforme?.nombre} alignSelf={'center'} />
+                                <HStack spacing={2} w="full" justifyContent="space-between" display={'flex'}>
+                                    <Stack direction="column" spacing={2} w="full" fontSize={{ base: '9px', lg: '12px' }} textAlign={'start'}>
+                                        <Text>SGA - Colegio Maria Imaculada</Text>
+                                        <Text>Av. Parra 215</Text>
                                         <Text>Arequipa - Perú</Text>
                                     </Stack>
-                                    <Stack direction="column" spacing={2} w="full" fontSize={'12px'}>
-                                        <Text>www.coar.gob.pe</Text>
-                                        <Text>E-mail: info@obedalvarado.pw</Text>
-                                        <Text>Tel: +456-345-908-559</Text>
-                                        <Text>Facebook: @colegio_imaculada</Text>
+                                    <Stack direction="column" spacing={2} w="full" fontSize={{ base: '9px', lg: '12px' }} textAlign={'end'}>
+                                        <Text>www.mi-arequipa.com</Text>
+                                        <Text>E-mail: colegiomariaimaculadaarequipa@gmail.com</Text>
+                                        <Text>Facebook: colegiomariainmaculadaarequipa</Text>
                                     </Stack>
                                 </HStack>
                             </Stack>
@@ -128,65 +153,69 @@ const ModalGenerarBoleta = ({ venta_uniforme }) => {
                                 borderWidth={'3px'}
                             />
                             <Stack direction={{ base: "column", lg: "row" }} w="full" justifyContent="stretch" spacing={6}>
-                                <Stack direction="column" mt={4} spacing={2} w="full">
-                                    <Stack direction="row" justifyContent="space-between" mb={6}>
+                                <Stack direction="column" mt={2} spacing={2} w="full">
+                                    <Stack direction={{ base: "column", lg: "row" }} spacing={2} justifyContent="space-between" mb={2}>
                                         <Text fontWeight="bold" fontSize={'3xl'} alignSelf={'center'}>BOLETA</Text>
                                         <Stack direction="column" fontSize={'sm'}>
                                             <HStack spacing={2} justifyContent="space-between">
-                                                <Text fontWeight="bold" >CODIGO:</Text>
-                                                <Text>{venta_uniforme?.codigo}</Text>
+                                                <Text fontWeight="bold" >N°:</Text>
+                                                <Text>{ventas_uniforme?.codigo}</Text>
                                             </HStack>
                                             <HStack spacing={2} justifyContent="space-between">
                                                 <Text fontWeight="bold" >DNI:</Text>
-                                                <Text>{venta_uniforme?.estudiante?.dni}</Text>
+                                                <Text>{ventas_uniforme?.estudiante?.dni}</Text>
                                             </HStack>
                                             <HStack spacing={4} justifyContent="space-between">
                                                 <Text fontWeight="bold" >APELLIDOS Y NOMBRES:</Text>
-                                                <Text>{venta_uniforme?.estudiante?.apellidos + ', ' + venta_uniforme?.estudiante?.nombres}</Text>
+                                                <Text>{ventas_uniforme?.estudiante?.apellidos + ', ' + ventas_uniforme?.estudiante?.nombres}</Text>
                                             </HStack>
                                             <HStack spacing={2} justifyContent="space-between">
-                                                <Text fontWeight="bold" >FECHA VENTA:</Text>
-                                                <Text>{Moment(venta_uniforme?.fecha_venta).format('DD-MM-YYYY - HH:mm:ss A')}</Text>
+                                                <Text fontWeight="bold" >FECHA VENTA UNIFORME:</Text>
+                                                <Text>{Moment(ventas_uniforme?.createdAt).format('DD-MM-YYYY - HH:mm:ss A')}</Text>
                                             </HStack>
                                         </Stack>
                                     </Stack>
-                                    <Divider borderColor="purple.600"/>
+                                    <Divider borderColor="purple.600" />
                                     <Stack>
-                                        <Text fontWeight="bold" fontSize={'2xl'} alignSelf={'center'}>DETALLE DE LA VENTA</Text>
-                                        <Table border={'1px'} mt={6}>
+                                        <Text fontWeight="bold" fontSize={'2xl'} alignSelf={'center'}>DETALLES DEL VENTA DE UNIFORME</Text>
+                                        <Table border={'1px'} mt={2}>
                                             <TableCaption>El monto de la boleta no incluye el impuesto sobre las ventas.</TableCaption>
                                             <Thead border={'1px'}>
                                                 <Tr>
-                                                    <Th color={'black'} fontSize={'md'} fontWeight={'bold'}>Codigo</Th>
-                                                    <Th color={'black'} fontSize={'md'} fontWeight={'bold'}>Descripción</Th>
-                                                    <Th color={'black'} fontSize={'md'} fontWeight={'bold'} isNumeric>Precio</Th>
+                                                    <Th color={useColorModeValue('black', 'white')} fontSize={{ base: 'xs', lg: 'md' }} fontWeight={'bold'}>CODIGO</Th>
+                                                    <Th color={useColorModeValue('black', 'white')} fontSize={{ base: 'xs', lg: 'md' }} fontWeight={'bold'}>DESCRIPCIÓN</Th>
+                                                    <Th color={useColorModeValue('black', 'white')} fontSize={{ base: 'xs', lg: 'md' }} fontWeight={'bold'} isNumeric>IMPORTE PAGADO</Th>
                                                 </Tr>
                                             </Thead>
                                             <Tbody border={'1px'}>
-                                            {venta_uniforme?.uniforme?.map((uniforme, index) => (
-                                                <Tr key={index} textAlign={'right'} border={'1px'}>
-                                                    <Td fontSize={'sm'}>{ uniforme?.codigo }</Td>
-                                                    <Td fontSize={'sm'}>{ uniforme?.descripcion }</Td>
-                                                    <Td fontSize={'sm'} isNumeric>S/{ uniforme?.precio }</Td>
-                                                </Tr>
-                                            ))}
+                                                {
+                                                    ventas_uniforme?.uniforme.map((uniforme, key) => {
+                                                        return (
+                                                            <Tr textAlign={'right'} border={'1px'} key={key}>
+                                                                <Td fontSize={{ base: 'xs', lg: 'sm' }}>{uniforme?.codigo}</Td>
+                                                                <Td fontSize={{ base: 'xs', lg: 'sm' }}>{uniforme?.articulo}</Td>
+                                                                <Td fontSize={{ base: 'xs', lg: 'sm' }} isNumeric>S/{uniforme?.precio}</Td>
+                                                            </Tr>
+                                                        )
+                                                    })
+                                                }
                                             </Tbody>
                                             <Tfoot mt={4}>
                                                 <Tr mt={4}>
                                                     <Th></Th>
-                                                    <Th color={'black'} fontSize={'lg'}>TOTAL PAGADO</Th>
-                                                    <Th color={'black'} isNumeric  fontSize={'xl'}>S/ { venta_uniforme?.monto_pagado } </Th>
+                                                    <Th color={useColorModeValue('black', 'white')} fontSize={{ base: 'xs', lg: 'lg' }}> IMPORTE TOTAL PAGADO</Th>
+                                                    <Th color={useColorModeValue('black', 'white')} isNumeric fontSize={{ base: 'md', lg: 'xl' }}>S/ {ventas_uniforme?.monto_pagado} </Th>
                                                 </Tr>
                                             </Tfoot>
                                         </Table>
                                     </Stack>
-                                    <Divider borderColor="purple.600"/>
+                                    <Divider borderColor="purple.600" />
                                     {
-                                        venta_uniforme?.observaciones ? (
+                                        ventas_uniforme?.observaciones ? (
                                             <Stack direction="column" mt={4} spacing={2} w="full">
                                                 <Stack direction="row" justifyContent="space-between" mb={6}>
                                                     <Text fontWeight="bold" fontSize={'xl'} alignSelf={'center'}>OBSERVACIONES</Text>
-                                                    <Text fontSize={'sm'}>{venta_uniforme?.observaciones}</Text>
+                                                    <Text fontSize={'sm'}>{ventas_uniforme?.observaciones}</Text>
                                                 </Stack>
                                             </Stack>
                                         ) : null
@@ -197,8 +226,16 @@ const ModalGenerarBoleta = ({ venta_uniforme }) => {
                     </DrawerBody>
 
                     <DrawerFooter w="full" justifyContent="center" textAlign="center" alignItems="center" display="flex">
-                        <Button colorScheme="purple" ml={4} _dark={{ bg: "purple.600", color: "white", _hover: { bg: "purple.700" } }} size="lg" onClick={handlePrint} borderRadius="none">
-                            IMPRIMIR/DESCARGAR
+                        <Button colorScheme="teal" ml={4} _dark={{ bg: "purple.600", color: "white", _hover: { bg: "purple.700" } }} size="lg" onClick={handlePrint} borderRadius="none">
+                            IMPRIMIR
+                        </Button>
+
+                        <Button colorScheme="green" ml={4} display={{ base: 'flex', lg: 'none' }} _dark={{ bg: "purple.600", color: "white", _hover: { bg: "purple.700" } }} size="lg" onClick={handleDownloadImageBase} borderRadius="none">
+                            DESCARGAR IMG
+                        </Button>
+
+                        <Button colorScheme="green" ml={4} display={{ base: 'none', lg: 'flex' }} _dark={{ bg: "purple.600", color: "white", _hover: { bg: "purple.700" } }} size="lg" onClick={handleDownloadImageLg} borderRadius="none">
+                            DESCARGAR IMG
                         </Button>
                     </DrawerFooter>
                 </DrawerContent>

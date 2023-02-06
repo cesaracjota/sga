@@ -66,11 +66,6 @@ const EditarEstudiante = () => {
 
     useEffect(() => {
 
-        if (isError) {
-            ToastChakra('Error', message, 'error', 1000);
-            console.log(message);
-        }
-
         if (!user) {
             navigate("/login");
         } else if (!user?.token) {
@@ -87,7 +82,12 @@ const EditarEstudiante = () => {
             dispatch(reset())
         }
 
-    }, [user, navigate, isError, message, dispatch, params.id]);
+    }, [user, navigate, dispatch, params.id]);
+
+    if (isError) {
+        ToastChakra('Error', message, 'error', 1500);
+        console.log(message);
+    }
 
     let gradosFilter = grados.filter(grado => grado.modalidad?.nombre === "CEBA");
 

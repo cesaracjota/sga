@@ -36,11 +36,6 @@ const DetallesActivo = ({ location }) => {
 
     useEffect(() => {
 
-        if (isError) {
-            ToastChakra('Error', message, 'error', 1000);
-            console.log(message);
-        }
-
         if (!user) {
             navigate("/login");
         } else if (!user.token) {
@@ -53,7 +48,12 @@ const DetallesActivo = ({ location }) => {
             dispatch(reset())
         }
 
-    }, [user, navigate, isError, message, dispatch, params.id]);
+    }, [user, navigate, dispatch, params.id]);
+
+    if (isError) {
+        ToastChakra('Error', message, 'error', 1500);
+        console.log(message);
+    }
 
     if (isLoading) {
         return <SpinnerComponent />

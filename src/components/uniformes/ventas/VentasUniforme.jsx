@@ -37,10 +37,6 @@ const VentasUniforme = () => {
     const { uniformes } = useSelector((state) => state.uniformes);
 
     useEffect(() => {
-        if (isError) {
-            ToastChakra('Error', message, 'error', 1000);
-            console.log(message);
-        }
 
         if (!user) {
             navigate("/login");
@@ -55,7 +51,12 @@ const VentasUniforme = () => {
             dispatch(reset())
         }
 
-    }, [user, navigate, isError, message, dispatch]);
+    }, [user, navigate, dispatch]);
+
+    if (isError) {
+        ToastChakra('Error', message, 'error', 1500);
+        console.log(message);
+    }
 
     const columns = [
         {
@@ -131,7 +132,7 @@ const VentasUniforme = () => {
             center: true,
             cell: row => (
                 <div>
-                    <ModalGenerarBoleta venta_uniforme={row} />
+                    <ModalGenerarBoleta ventas_uniforme={row} />
                     <Link to={{
                             pathname: '/ebr/uniformes/ventas/' + row._id
                         }}>

@@ -6,7 +6,9 @@ const API_URL = process.env.REACT_APP_API_URL;
 // Get libro
 
 const getAllLibros = async () => {
+
     const response = await axios.get(`${API_URL}/libros`);
+
     return response.data;
 }
 

@@ -16,6 +16,7 @@ import GraficoBar from './Bar';
 // import CustomContentTooltip from './CustomContentTooltip';
 import { getReportesCEBA, getReportesEBR, getReportesRESIDENCIA, reset } from '../../features/reporteSlice';
 import { SpinnerComponent } from '../../helpers/spinner';
+import { ToastChakra } from '../../helpers/toast';
 
 const Home = () => {
 
@@ -25,7 +26,7 @@ const Home = () => {
 
   const { user } = useSelector((state) => state.auth);
   
-  const { reportesEBR, reportesCEBA, reportesRESIDENCIA, isLoading, message } = useSelector((state) => state.reportes);
+  const { reportesEBR, reportesCEBA, reportesRESIDENCIA, isLoading, isError, message } = useSelector((state) => state.reportes);
 
   useEffect(() => {
 
@@ -49,7 +50,12 @@ const Home = () => {
       dispatch(reset());
   }
 
-  }, [dispatch, message, navigate, user]);
+  }, [dispatch, navigate, user]);
+  
+  if(isError) {
+    ToastChakra('Error', message, 'error', 1500);
+    console.log(message);
+  }
 
   if (isLoading) {
       return <SpinnerComponent />

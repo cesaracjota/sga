@@ -28,11 +28,6 @@ const Laboratorios = () => {
 
     useEffect(() => {
 
-        if (isError) {
-            ToastChakra('Error', message, 'error', 1000);
-            console.log(message);
-        }
-
         if (!user) {
             navigate("/login");
         } else if (!user.token) {
@@ -45,7 +40,12 @@ const Laboratorios = () => {
             dispatch(reset())
         }
 
-    }, [user, navigate, isError, message, dispatch]);
+    }, [user, navigate, dispatch]);
+
+    if (isError) {
+        ToastChakra('Error', message, 'error', 1500);
+        console.log(message);
+    }
 
     const columns = [
         {

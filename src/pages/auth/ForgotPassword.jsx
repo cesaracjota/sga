@@ -20,7 +20,6 @@ import {  useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { ToastChakra } from '../../helpers/toast';
 import bgCardAuth from '../../assets/img/bgAuth.webp';
-import bgAuth from '../../assets/img/lineas-fondo-auth.png';
 import { FaRegUser } from 'react-icons/fa';
 
 const ForgotPasswordPage = () => {
@@ -53,7 +52,7 @@ const ForgotPasswordPage = () => {
             </Stack>
         </Center>
     ) : (
-        <HStack spacing={2} w={'full'} h={'100vh'} bgImage={bgAuth} px={{ base: 4, lg: 28}} py={{base: 14, lg: 20}}>
+        <HStack spacing={2} w={'full'} h={'100vh'} px={{ base: 4, lg: 28}} py={{base: 14, lg: 20}}>
             <Flex w="full" h="full" display={{ base: 'none', lg: 'flex'}}>
                 <Box justifyContent="center" w="full">
                         <Image

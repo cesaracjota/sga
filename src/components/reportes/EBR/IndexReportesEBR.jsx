@@ -8,6 +8,7 @@ import { SpinnerComponent } from '../../../helpers/spinner';
 import ReportePagos from './ReportePagos';
 import PrestamoLibros from './PrestamoLibrosMapas';
 import ReporteVentaUniformes from './ReporteVentaUniformes';
+import { ToastChakra } from '../../../helpers/toast';
 
 const IndexChartEBR = () => {
 
@@ -16,7 +17,7 @@ const IndexChartEBR = () => {
 
     const { user } = useSelector((state) => state.auth);
 
-    const { reportesEBR, isLoading, message } = useSelector((state) => state.reportes);
+    const { reportesEBR, isLoading, message, isError } = useSelector((state) => state.reportes);
 
     useEffect(() => {
 
@@ -34,7 +35,12 @@ const IndexChartEBR = () => {
             dispatch(reset());
         }
 
-    }, [dispatch, message, navigate, user]);
+    }, [dispatch, navigate, user]);
+
+    if(isError) {
+        ToastChakra('Error', message, 'error', 1500);
+        console.log(message);
+    }
 
     if (isLoading) {
         return <SpinnerComponent />

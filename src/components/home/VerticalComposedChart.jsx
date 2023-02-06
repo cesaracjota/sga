@@ -52,6 +52,7 @@ const data = [
 ];
 
 export default class VerticalComposedChart extends PureComponent {
+    
     static demoUrl = 'https://codesandbox.io/s/vertical-composed-chart-w6fni';
 
     render() {

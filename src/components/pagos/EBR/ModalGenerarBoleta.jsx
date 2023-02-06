@@ -30,6 +30,7 @@ import { FaFileInvoice } from 'react-icons/fa';
 import { useReactToPrint } from 'react-to-print';
 import downloadjs from 'downloadjs';
 import html2canvas from 'html2canvas';
+import logoIE from '../../../assets/img/MI.png';
 
 const ModalGenerarBoleta = ({ pago }) => {
 
@@ -133,19 +134,17 @@ const ModalGenerarBoleta = ({ pago }) => {
                     <DrawerBody ref={componentRef} id="boleta" w="full" h="100%" bg={'white'} _dark={{ bg: "primary.800" }}>
                         <Stack direction="column" mt={2} w={'full'}>
                             <Stack direction={{ base: "column", lg: "row" }} w="full" mb={2} justifyContent="space-evenly" alignItems={'center'} spacing={4} display={'flex'}>
-                                <ImageChakra objectFit='cover' src={'https://upload.wikimedia.org/wikipedia/commons/0/00/Colegio_mayor_coar_logo.png'} maxW={'100px'} fallbackSrc='https://via.placeholder.com/100x100?text=LOGO' alt={pago?.nombre} alignSelf={'center'} />
+                                <ImageChakra objectFit='cover' src={logoIE} maxW={'100px'} fallbackSrc='https://via.placeholder.com/100x100?text=LOGO' alt={pago?.nombre} alignSelf={'center'} />
                                 <HStack spacing={2} w="full" justifyContent="space-between" display={'flex'}>
                                     <Stack direction="column" spacing={2} w="full" fontSize={{ base: '9px', lg: '12px' }} textAlign={'start'}>
-                                        <Text>SGA - Colegio de Alto Rendimiento</Text>
-                                        <Text>RUC: 1020304050</Text>
-                                        <Text>Av. Los Pinos 123</Text>
+                                        <Text>SGA - Colegio Maria Imaculada</Text>
+                                        <Text>Av. Parra 215</Text>
                                         <Text>Arequipa - Perú</Text>
                                     </Stack>
                                     <Stack direction="column" spacing={2} w="full" fontSize={{ base: '9px', lg: '12px' }} textAlign={'end'}>
-                                        <Text>www.coar.gob.pe</Text>
-                                        <Text>E-mail: info@obedalvarado.pw</Text>
-                                        <Text>Tel: +456-345-908-559</Text>
-                                        <Text>Facebook: @colegio_imaculada</Text>
+                                        <Text>www.mi-arequipa.com</Text>
+                                        <Text>E-mail: colegiomariaimaculadaarequipa@gmail.com</Text>
+                                        <Text>Facebook: colegiomariainmaculadaarequipa</Text>
                                     </Stack>
                                 </HStack>
                             </Stack>

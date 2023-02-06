@@ -31,10 +31,6 @@ const Uniformes = () => {
     const { categoria_uniformes } = useSelector((state) => state.categoria_uniformes);
 
     useEffect(() => {
-        if (isError) {
-            ToastChakra('Error', message, 'error', 1000);
-            console.log(message);
-        }
 
         if (!user) {
             navigate("/login");
@@ -49,7 +45,12 @@ const Uniformes = () => {
             dispatch(reset())
         }
 
-    }, [user, navigate, isError, message, dispatch]);
+    }, [user, navigate, dispatch]);
+
+    if (isError) {
+        ToastChakra('Error', message, 'error', 1500);
+        console.log(message);
+    }
 
     const columns = [
         {

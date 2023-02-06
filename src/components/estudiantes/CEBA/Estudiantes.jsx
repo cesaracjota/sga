@@ -45,18 +45,18 @@ const Estudiantes = () => {
             navigate("/login");
         }
 
-        if(isError) {
-            console.log(message);
-            ToastChakra('Error', message, 'error', 1000);
-        }
-
         dispatch(getEstudiantes())
 
         return () => {
             dispatch(reset())
         }
 
-    }, [user, navigate, isError, message, dispatch]);
+    }, [user, navigate, dispatch]);
+
+    if(isError) {
+        console.log(message);
+        ToastChakra('Error', message, 'error', 1500);
+    }
 
     const columns = [
         {

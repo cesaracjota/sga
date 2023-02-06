@@ -27,11 +27,6 @@ const DetallesEstudiante = ({ location }) => {
 
     const params = useParams(location);
 
-    if (isError) {
-        ToastChakra('Error', message, 'error', 1000);
-        console.log(message);
-    }
-
     useEffect(() => {
 
         if (!user) {
@@ -46,7 +41,12 @@ const DetallesEstudiante = ({ location }) => {
             dispatch(reset())
         }
 
-    }, [user, navigate, isError, message, dispatch, params.id]);
+    }, [user, navigate, dispatch, params.id]);
+
+    if (isError) {
+        ToastChakra('Error', message, 'error', 1500);
+        console.log(message);
+    }
 
     const getBithdayTimer = (birthday) => {
         if (!birthday) return 'No hay fecha de nacimiento';

@@ -39,10 +39,6 @@ const AgregarActivo = () => {
     const { tipo_activos, isLoading, isError, message } = useSelector((state) => state.tipo_activos);
 
     useEffect(() => {
-        if (isError) {
-            ToastChakra('Error', message, 'error', 1000);
-            console.log(message);
-        }
 
         if (!user) {
             navigate("/login");
@@ -56,7 +52,12 @@ const AgregarActivo = () => {
             dispatch(reset())
         }
 
-    }, [user, navigate, isError, message, dispatch]);
+    }, [user, navigate, dispatch]);
+
+    if (isError) {
+        ToastChakra('Error', message, 'error', 1500);
+        console.log(message);
+    }
 
     const initialValues = {
         codigo: '',

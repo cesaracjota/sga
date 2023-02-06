@@ -40,12 +40,12 @@ const ModalAgregarLibro = ({ grados }) => {
 
     const { modalidades, isError, message } = useSelector((state) => state.modalidades);
     
+    if(isError) {
+        ToastChakra('Error', message, 'error', 1500);
+        console.log(message);
+    }
+
     useEffect(() => {
-        
-        if(isError) {
-            ToastChakra('Error', message, 'error', 1000);
-            console.log(message);
-        }
 
         dispatch(getModalidades())
 
@@ -53,7 +53,7 @@ const ModalAgregarLibro = ({ grados }) => {
             dispatch(reset())
         }
 
-    }, [navigate, isError, message, dispatch]);
+    }, [navigate, dispatch]);
 
     const initialValues = {
         titulo: '',

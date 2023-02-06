@@ -24,7 +24,6 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { register, reset } from '../../features/authSlice';
 import { ToastChakra } from '../../helpers/toast';
 import bgCardAuth from '../../assets/img/bgAuth.webp';
-import bgAuth from '../../assets/img/lineas-fondo-auth.png';
 import { FaRegUser } from 'react-icons/fa';
 import { FiLock, FiMail } from 'react-icons/fi';
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
@@ -88,7 +87,7 @@ const RegisterPage = () => {
         </Center>
     ) : (
         <form onSubmit={handleRegister}>
-            <HStack spacing={2} w={'full'} h={'100vh'} bgImage={bgAuth} px={{ base: 4, lg: 28 }} py={{ base: 14, lg: 20 }}>
+            <HStack spacing={2} w={'full'} h={'100vh'} px={{ base: 4, lg: 28 }} py={{ base: 14, lg: 20 }}>
                 <Flex w="full" h="full" display={{ base: 'none', lg: 'flex' }}>
                     <Box justifyContent="center" w="full">
                         <Image

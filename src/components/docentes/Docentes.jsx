@@ -42,11 +42,6 @@ const Estudiantes = () => {
 
     useEffect(() => {
 
-        if(isError) {
-            ToastChakra('Error', message, 'error', 1000);
-            console.log(message);
-        }
-
         if (!user) {
             navigate("/login");
         }
@@ -57,7 +52,12 @@ const Estudiantes = () => {
             dispatch(reset())
         }
 
-    }, [user, navigate, isError, message, dispatch]);
+    }, [user, navigate, dispatch]);
+
+    if(isError) {
+        ToastChakra('Error', message, 'error', 1500);
+        console.log(message);
+    }
 
     const columns = [
         {

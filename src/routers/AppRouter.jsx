@@ -6,10 +6,10 @@ import SettingsPage from '../pages/settings';
 import PersonasPage from '../pages/personas';
 import LoginPage from '../pages/auth/Login';
 import NotFoundPage from '../pages/404/NotFoundPage';
-import RegisterPage from '../pages/auth/Register';
+// import RegisterPage from '../pages/auth/Register';
 import PrivateRoutes from './PrivateRoutes';
 import PublicRoute from './PublicRoute';
-import ForgotPasswordPage from '../pages/auth/ForgotPassword';
+// import ForgotPasswordPage from '../pages/auth/ForgotPassword';
 import LibrosPage from '../pages/libros';
 import GradosPage from '../pages/grados';
 import UniformesPage from '../pages/uniformes';
@@ -115,8 +115,8 @@ export default function AppRouter() {
             </Route>
             <Route element={<PublicRoute />}>
                 <Route path="/login" element={<LoginPage />} />
-                <Route path="/register" element={<RegisterPage />} />
-                <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+                {/* <Route path="/register" element={<RegisterPage />} />
+                <Route path="/forgot-password" element={<ForgotPasswordPage />} /> */}
             </Route>
             <Route path="*" element={<NotFoundPage />} />
         </Routes>

@@ -66,11 +66,6 @@ const HisotorialPagoEstudiantes = ({ location }) => {
             navigate("/login");
         }
 
-        if(isError) {
-            console.log(message);
-            ToastChakra('Error', message, 'error', 1000);
-        }
-
         dispatch(getPagoByStudent(params.id)).then((data) => {
             setTableRowsData(data.payload);
         })
@@ -79,7 +74,12 @@ const HisotorialPagoEstudiantes = ({ location }) => {
             dispatch(reset())
         }
 
-    }, [user, navigate, isError, message, dispatch, params.id]);
+    }, [user, navigate, dispatch, params.id]);
+
+    if(isError) {
+        ToastChakra('Error', message, 'error', 1500);
+        console.log(message);
+    }
 
     const columns = [
         {
